@@ -7,13 +7,14 @@ const quantity = 15;
 const shippingMethod = {
     feePerCase: 2,
     discountThreshold: 50,
-    discountedFee: 1
+    discountedFee: 1,
+    isNeedShipFee: false, // 控制是否實施商城全館免運活動
 };
 
-// 最終價格
+// 計算最終價格
 function priceOrder(product, quantity, shippingMethod) {
     const priceData = calculatePricingData(product, quantity);
-    const shippingCost = applyShipping(priceData, shippingMethod);
+    const shippingCost = shippingMethod.isNeedShipFee ? applyShipping(priceData, shippingMethod) : 0;
     return priceData.basePrice - priceData.discount + shippingCost;
 }
 // 使用產品資訊計算產品價格
