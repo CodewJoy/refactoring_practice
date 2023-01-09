@@ -7,11 +7,11 @@ const station = { name: "ZB1",
         {temp: 51, time: "2016-11-10 09:50"},
     ]
 };
-const operatingPlan = { temperatureFloor: 0, temperatureCeiling: 50 };
+const operatingPlan = { temperatureFloor: 52, temperatureCeiling: 57 };
 
 function readingsOutsideRange(station, min, max) {
     return station.readings
-      .filter(r => r.temp < min || r.temp > max);
+      .filter(r => (r.temp < min || r.temp > max));
 }
 
 const outsideRange = readingsOutsideRange(station,
