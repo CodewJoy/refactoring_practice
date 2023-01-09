@@ -10,13 +10,15 @@ const shippingMethod = {
     discountedFee: 1
 };
 function priceOrder(product, quantity, shippingMethod) {
-    // 使用產品資訊計算產品價格
+    const priceData = calculatePricingData(product, quantity);
+    return applyShipping(priceData, shippingMethod);
+}
+// 使用產品資訊計算產品價格
+function calculatePricingData(product, quantity) {
     const basePrice = product.basePrice * quantity;
     const discount = Math.max(quantity - product.discountThreshold, 0)
             * product.basePrice * product.discountRate;
-    const priceData = { basePrice, quantity, discount };
-    const price = applyShipping(priceData, shippingMethod);
-    return price;
+    return { basePrice, quantity, discount };
 }
 function applyShipping(priceData, shippingMethod) {
     // 使用貨運資訊計算運費
