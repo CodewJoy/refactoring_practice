@@ -17,8 +17,9 @@ const baseCharge = aReading1.baseCharge;
 console.log('baseCharge', baseCharge);
 
 // client 2
-const aReading2 = acquireReading();
-const base = (baseRate(aReading2.month, aReading2.year) * aReading2.quantity);
+const rawReading2 = acquireReading();
+const aReading2 = enrichReading(rawReading2);
+const base = aReading1.baseCharge;
 const taxableCharge =  Math.max(0, base - taxThreshold(aReading2.year));
 console.log('taxableCharge', taxableCharge);
 
@@ -33,7 +34,6 @@ function enrichReading(original) {
     result.baseCharge = calculateBaseCharge(result);
     return result;
 }
-
 function calculateBaseCharge(aReading) {
     return  baseRate(aReading.month, aReading.year) * aReading.quantity;
 }
