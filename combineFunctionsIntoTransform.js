@@ -11,8 +11,9 @@ function acquireReading() {
 }
 
 // client 1
-const aReading1 = acquireReading();
-const baseCharge = baseRate(aReading1.month, aReading1.year) * aReading1.quantity;
+const rawReading1 = acquireReading();
+const aReading1 = enrichReading(rawReading1);
+const baseCharge = aReading1.baseCharge;
 console.log('baseCharge', baseCharge);
 
 // client 2
