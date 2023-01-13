@@ -22,27 +22,31 @@ const taxableCharge =  Math.max(0, base - taxThreshold(aReading2.year));
 console.log('taxableCharge', taxableCharge);
 
 // client 3
-const aReading3 = acquireReading();
-const basicChargeAmount = calculateBaseCharge(aReading3);
-function calculateBaseCharge(aReading) {
-    return  baseRate(aReading.month, aReading.year) * aReading.quantity;
-}
+const rawReading3 = acquireReading();
+const aReading3 = enrichReading(rawReading3);
+const basicChargeAmount = aReading3.baseCharge;
 console.log('basicChargeAmount', basicChargeAmount);
 
-function acquireReading() {
-    return deepClone(reading);
+function enrichReading(original) {
+    const result = deepClone(original);
+    result.baseCharge = calculateBaseCharge(result);
+    return result;
+}
+
+function calculateBaseCharge(aReading) {
+    return  baseRate(aReading.month, aReading.year) * aReading.quantity;
 }
 
 function baseRate(month, year) {
     // hypothetical calculations to determine base rate based on month and year
     const baseRate = 2;
-    if(year>=2020 && month>=6) baseRate +=1;
+    if(year >= 2020 && month >= 6) baseRate +=1;
     return baseRate;
 }
 function taxThreshold(year) {
     // hypothetical calculations to determine tax threshold based on year
     const taxThreshold = 100;
-    if(year>=2021) taxThreshold +=50;
+    if(year >= 2021) taxThreshold +=50;
     return taxThreshold;
 }
   
