@@ -1,5 +1,14 @@
 // origin data
-const reading = {customer: "ivan", quantity: 10, month: 5, year: 2017};
+// This function returns an object containing 
+// the customer name, tea quantity, month and year of the reading.
+function acquireReading() {
+    const customer = "ivan";
+    const quantity = 10;
+    const month = 5;
+    const year = 2017;
+  
+    return { customer, quantity, month, year };
+}
 
 // client 1
 const aReading1 = acquireReading();
@@ -25,12 +34,18 @@ function acquireReading() {
 }
 
 function baseRate(month, year) {
-    return 0.03 * (1 + (month - 1) / 12) + (year - 2017) * 0.05;
+    // hypothetical calculations to determine base rate based on month and year
+    const baseRate = 2;
+    if(year>=2020 && month>=6) baseRate +=1;
+    return baseRate;
 }
 function taxThreshold(year) {
-    return 1000 + (year - 2017) * 100;
+    // hypothetical calculations to determine tax threshold based on year
+    const taxThreshold = 100;
+    if(year>=2021) taxThreshold +=50;
+    return taxThreshold;
 }
-
+  
 function deepClone(obj) {
     if (obj === null || typeof obj !== 'object') {
       return obj;
