@@ -30,6 +30,9 @@ class Reading {
     get baseCharge() { // Rename Function
         return  baseRate(this._month, this._year) * this._quantity; // move Funtion into Class
     }
+    get taxableCharge() {
+        return  Math.max(0, this.baseCharge - taxThreshold(this.year));
+    }
 }
 
 /** client 1, client 2, client 3 指的是在 code base 中不同地方有使用到 baseRate 的代碼 */
@@ -43,12 +46,8 @@ console.log('baseCharge', baseCharge); // test result: 20
 // client 2: taxableCharge: 計算法規允許的基本免稅額
 const rawReading2 = acquireReading();
 const aReading2 = new Reading(rawReading2);
-const taxableCharge = taxableChargeFn(aReading2);
+const taxableCharge = aReading2.taxableCharge;
 console.log('taxableCharge', taxableCharge); // test result: 0
-
-function taxableChargeFn(aReading) {
-    return  Math.max(0, aReading.baseCharge - taxThreshold(aReading.year));
-}
 
 // client 3: 在 code base 中其他地方，寫了跟 client 1 一樣的邏輯，並且使用了 Extract Function
 const rawReading3 = acquireReading();
