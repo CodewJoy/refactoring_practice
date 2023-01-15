@@ -30,14 +30,9 @@ const taxableCharge =  Math.max(0, base - taxThreshold(aReading2.year));
 console.log('taxableCharge', taxableCharge); // test result: 0
 
 // client 3: 在 code base 中其他地方，寫了跟 client 1 一樣的邏輯，並且使用了 Extract Function
-const aReading3 = acquireReading();
-const basicChargeAmount = calculateBaseCharge(aReading3);
-function calculateBaseCharge(aReading) {
-    return  baseRate(aReading.month, aReading.year) * aReading.quantity;
-}
-function calculateBaseCharge(aReading) {
-    return  baseRate(aReading.month, aReading.year) * aReading.quantity;
-}
+const rawReading3 = acquireReading();
+const aReading3 = new Reading(rawReading3);
+const basicChargeAmount = aReading3.calculateBaseCharge;
 console.log('basicChargeAmount', basicChargeAmount); // test result: 20
 class Reading {
     constructor(data) {
@@ -50,6 +45,9 @@ class Reading {
     get quantity() {return this._quantity;}
     get month()    {return this._month;}
     get year()     {return this._year;}
+    get calculateBaseCharge() {
+        return  baseRate(aReading.month, aReading.year) * aReading.quantity; // move Funtion into Class
+    }
 }
 
 /** Following funct is assumed by Joy cause in the book has no related example */
@@ -77,4 +75,3 @@ function deepClone(obj) {
     }
     return clone;
 }
-
