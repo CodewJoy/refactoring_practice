@@ -16,24 +16,6 @@ function acquireReading() {
     return data;
 }
 
-/** client 1, client 2, client 3 指的是在 code base 中不同地方有使用到 baseRate 的代碼 */
-
-// client 1: 計算該使用者在某年某月使用的茶飲數量所必須繳的稅額（茶在英國視為生活必需品，必須繳稅）
-const aReading1 = acquireReading();
-const baseCharge = baseRate(aReading1.month, aReading1.year) * aReading1.quantity;
-console.log('baseCharge', baseCharge); // test result: 20
-
-// client 2: taxableCharge: 計算法規允許的基本免稅額
-const aReading2 = acquireReading();
-const base = (baseRate(aReading2.month, aReading2.year) * aReading2.quantity);
-const taxableCharge =  Math.max(0, base - taxThreshold(aReading2.year));
-console.log('taxableCharge', taxableCharge); // test result: 0
-
-// client 3: 在 code base 中其他地方，寫了跟 client 1 一樣的邏輯，並且使用了 Extract Function
-const rawReading3 = acquireReading();
-const aReading3 = new Reading(rawReading3);
-const basicChargeAmount = aReading3.calculateBaseCharge;
-console.log('basicChargeAmount', basicChargeAmount); // test result: 20
 class Reading {
     constructor(data) {
       this._customer = data.customer;
@@ -45,10 +27,30 @@ class Reading {
     get quantity() {return this._quantity;}
     get month()    {return this._month;}
     get year()     {return this._year;}
-    get calculateBaseCharge() {
-        return  baseRate(aReading.month, aReading.year) * aReading.quantity; // move Funtion into Class
+    get baseCharge() { // Rename Function
+        return  baseRate(this._month, this._year) * this._quantity; // move Funtion into Class
     }
 }
+
+/** client 1, client 2, client 3 指的是在 code base 中不同地方有使用到 baseRate 的代碼 */
+
+// client 1: 計算該使用者在某年某月使用的茶飲數量所必須繳的稅額（茶在英國視為生活必需品，必須繳稅）
+const rawReading1 = acquireReading();
+const aReading1 = new Reading(rawReading1);
+const baseCharge = aReading1.baseCharge;
+console.log('baseCharge', baseCharge); // test result: 20
+
+// client 2: taxableCharge: 計算法規允許的基本免稅額
+const aReading2 = acquireReading();
+const base = (baseRate(aReading2.month, aReading2.year) * aReading2.quantity);
+const taxableCharge =  Math.max(0, base - taxThreshold(aReading2.year));
+console.log('taxableCharge', taxableCharge); // test result: 0
+
+// client 3: 在 code base 中其他地方，寫了跟 client 1 一樣的邏輯，並且使用了 Extract Function
+const rawReading3 = acquireReading();
+const aReading3 = new Reading(rawReading3);
+const basicChargeAmount = aReading3.baseCharge;
+console.log('basicChargeAmount', basicChargeAmount); // test result: 20
 
 /** Following funct is assumed by Joy cause in the book has no related example */
 function baseRate(month, year) {
