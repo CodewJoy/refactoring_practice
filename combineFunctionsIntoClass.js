@@ -58,7 +58,7 @@ const aReading3 = new Reading(rawReading3);
 const basicChargeAmount = aReading3.baseCharge;
 console.log('basicChargeAmount', basicChargeAmount); // test result: 20
 
-// client 4: 
+// client 4: mocked data change condition by Joy
 const rawReading4 = acquireReading();
 const aReading4 = new Reading(rawReading4);
 let baseCharge4 = aReading4.baseCharge;
