@@ -6,13 +6,14 @@
  * but in a real world scenario 
  * it might be getting the reading from a database, a web service, a file or other data source.
  */
-function acquireReading() {
-    const customer = "ivan";
-    const quantity = 10;
-    const month = 5;
-    const year = 2017;
-  
-    return { customer, quantity, month, year };
+ function acquireReading() {
+    const data = {
+        customer: "ivan",
+        quantity: 10,
+        month: 5,
+        year: 2017,
+    }
+    return data;
 }
 
 /** client 1, client 2, client 3 指的是在 code base 中不同地方有使用到 baseRate 的代碼 */
