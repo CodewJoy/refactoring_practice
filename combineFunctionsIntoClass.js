@@ -33,6 +33,9 @@ class Reading {
     get taxableCharge() {
         return  Math.max(0, this.baseCharge - taxThreshold(this.year));
     }
+    updateQuantity(newQuantity) {
+        this._quantity = newQuantity;
+    }
 }
 
 /** client 1, client 2, client 3 指的是在 code base 中不同地方有使用到 baseRate 的代碼 */
@@ -54,6 +57,19 @@ const rawReading3 = acquireReading();
 const aReading3 = new Reading(rawReading3);
 const basicChargeAmount = aReading3.baseCharge;
 console.log('basicChargeAmount', basicChargeAmount); // test result: 20
+
+// client 4: 
+const rawReading4 = acquireReading();
+const aReading4 = new Reading(rawReading4);
+let baseCharge4 = aReading4.baseCharge;
+const someCondition = true;
+if (someCondition) {
+    aReading4.updateQuantity(aReading4.quantity + 1);
+    baseCharge4 = aReading4.baseCharge;
+}
+const updatedQuantity = aReading4.quantity;
+console.log('updatedQuantity', updatedQuantity); // test result: 11
+console.log('baseCharge4', baseCharge4); // test result: 22
 
 /** Following funct is assumed by Joy cause in the book has no related example */
 function baseRate(month, year) {
