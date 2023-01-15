@@ -41,10 +41,14 @@ const baseCharge = aReading1.baseCharge;
 console.log('baseCharge', baseCharge); // test result: 20
 
 // client 2: taxableCharge: 計算法規允許的基本免稅額
-const aReading2 = acquireReading();
-const base = (baseRate(aReading2.month, aReading2.year) * aReading2.quantity);
-const taxableCharge =  Math.max(0, base - taxThreshold(aReading2.year));
+const rawReading2 = acquireReading();
+const aReading2 = new Reading(rawReading2);
+const taxableCharge = taxableChargeFn(aReading2);
 console.log('taxableCharge', taxableCharge); // test result: 0
+
+function taxableChargeFn(aReading) {
+    return  Math.max(0, aReading.baseCharge - taxThreshold(aReading.year));
+}
 
 // client 3: 在 code base 中其他地方，寫了跟 client 1 一樣的邏輯，並且使用了 Extract Function
 const rawReading3 = acquireReading();
